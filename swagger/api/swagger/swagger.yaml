@@ -1,0 +1,154 @@
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: Secret Santa
+# during dev, should point to your local machine
+host: localhost:8080
+# basePath prefixes all resource paths 
+basePath: /
+# 
+schemes:
+  # tip: remove http to make production-grade
+  - http
+  - https
+# format of bodies a client can send (Content-Type)
+consumes:
+  - application/json
+# format of the responses to the client (Accepts)
+produces:
+  - application/json
+paths:
+  /register:
+    post:
+      description: Register new user
+      parameters:
+        - in: body
+          name: user
+          schema:
+            type: object
+            required: [firstName, lastName]
+            properties:
+              firstName:
+                type: string
+              lastName:
+                type: string
+              gifts:
+                type: array
+                items:
+                  type: string
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /users:
+    get:
+      description: Returns users
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/UsersResponse"
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /assignedUser:
+    get:
+      description: Get assigned user info
+      responses:
+        "200":
+          description: Success
+        default:
+          description: Error
+          schema:
+            $ref: "#/definitions/ErrorResponse"
+  /gifts:
+    get:
+      description: Returns gifts
+      responses:
+        "200":
+          description: Success
+          schema:
+            $ref: "#/definitions/GiftsResponse"
+        default:
+          description: Error
+          schema:
+            $ref:  "#/definitions/ErrorResponse"
+definitions:
+  AssignedUserResponse:
+    required:
+      - data
+    properties:
+      data:
+        type: array
+        items:
+          properties:
+            firstName:
+              type: string
+            lastName:
+              type: string
+            gifts:
+              type: array
+              items:
+                type: string
+  GiftsResponse:
+    required:
+      - data
+    properties:
+      data:
+        type: array
+        items:
+          $ref: "#/definitions/Gift"
+  Gift:
+    required: [id, description, userId]
+    properties:
+      id:
+        type: integer
+      description:
+        type: string
+      userId:
+        type: integer
+  User:
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      id:
+        type: integer
+      assignedId:
+        type: integer
+  AssignedUser:
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+      gifts:
+        type: array
+        items:
+          $ref: "#/definitions/Gift"
+  UserPayload:
+    required: [firstName, lastName]
+    properties:
+      firstName:
+        type: string
+      lastName:
+        type: string
+  UsersResponse:
+    required:
+      - data
+    properties:
+      data:
+        type: array
+        items:
+          $ref: '#/definitions/User'
+  ErrorResponse:
+    required:
+      - message
+    properties:
+      message:
+        type: string

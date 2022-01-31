@@ -1,0 +1,23 @@
+{
+  "name": "swagger",
+  "version": "0.0.1",
+  "private": true,
+  "description": "New Swagger API Project",
+  "keywords": [],
+  "author": "",
+  "license": "",
+  "main": "app.js",
+  "dependencies": {
+    "restify": "^4.0.2",
+    "swagger-restify-mw": "^0.1.0",
+    "swagger-router": "^0.7.4"
+  },
+  "devDependencies": {
+    "should": "^7.1.0",
+    "supertest": "^1.0.0"
+  },
+  "scripts": {
+    "start": "npx swagger project start",
+    "test": "swagger project test"
+  }
+}
